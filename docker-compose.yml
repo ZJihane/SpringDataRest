@@ -37,7 +37,7 @@ services:
       - spring-data
 
   voiture-front-end:
-    image: reactjs
+    image: reactjs-frontend
     container_name: reactjs-frontend
     ports:
       - "3000:80"
