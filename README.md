@@ -78,4 +78,4 @@ docker-compose down
 
 - Ensure PostgreSQL is available at port `5433` if running another PostgreSQL instance on your machine.
 - If any service fails to start, check the logs using `docker logs <container_name>` for more details.
-```
+
