@@ -17,8 +17,9 @@ This project is a **full-stack web application** built with a **React frontend**
 
 ## ⚡ Quick Start
 
-To run the entire project locally, ensure you have **Docker** and **Docker Compose** installed.
-The Docker images for both the backend and frontend come pre-configured with Node.js and Maven. Additionally, PostgreSQL is included as part of the Docker Compose setup. This means you don’t need to install any additional dependencies or databases on your local machine. The application will handle the Node.js, Maven, and PostgreSQL setups automatically during the Docker image build and container run processes.
+- To run the entire project locally, ensure you have **Docker** and **Docker Compose** installed.
+- The Docker images for both the backend and frontend come pre-configured with Node.js and Maven.
+- Additionally, PostgreSQL is included as part of the Docker Compose setup. This means you don’t need to install any additional dependencies or databases on your local machine. The application will handle the Node.js, Maven, and PostgreSQL setups automatically during the Docker image build and container run processes.
 
 ### 1. 🚀 Clone the Repository  
 ```bash
