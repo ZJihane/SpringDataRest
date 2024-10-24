@@ -8,7 +8,7 @@ COPY package.json ./
 RUN npm install --legacy-peer-deps
 
 # Copy the rest of the code and build the application
-COPY . ./
+COPY .. ./
 RUN npm run build
 
 # Step 2: Serve the build using Nginx
