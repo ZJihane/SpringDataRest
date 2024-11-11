@@ -8,11 +8,11 @@ pipeline {
     }
 
     stages {
-        stage('Clone Repository') {
-            steps {
-                git 'https://github.com/ZJihane/SpringDataRest.git'
-            }
-        }
+         stage('Checkout Source Code') {
+                    steps {
+                        checkout scm
+                    }
+                }
 
         stage('Build Backend') {
             steps {
