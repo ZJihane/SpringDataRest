@@ -19,7 +19,7 @@ pipeline {
                 script {
                     // Using batch command (bat) instead of sh for Windows
                     bat './mvnw clean install'
-                    bat "docker build -t %DOCKER_IMAGE_BACKEND% ./backend"
+                    bat "docker build -t %DOCKER_IMAGE_BACKEND% "
                 }
             }
         }
@@ -28,8 +28,8 @@ pipeline {
             steps {
                 script {
                     // Build the React app (using npm)
-                    bat 'cd frontend && npm install && npm run build'
-                    bat "docker build -t %DOCKER_IMAGE_FRONTEND% ./frontend"
+                    bat 'cd src/main/webapp/reactjs && npm install && npm run build'
+                    bat "docker build -t %DOCKER_IMAGE_FRONTEND% "
                 }
             }
         }
