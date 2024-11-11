@@ -34,16 +34,15 @@ pipeline {
             }
         }
 
-        stage('Docker Login') {
-            steps {
-                script {
-                    // Docker login with Jenkins stored credentials (ensure credentials are set correctly)
-                    withCredentials([usernamePassword(credentialsId: 'Dockerhub-credentials', usernameVariable: 'DOCKER_USERNAME', passwordVariable: 'DOCKER_PASSWORD')]) {
-                        bat "echo %DOCKER_PASSWORD% | docker login -u %DOCKER_USERNAME% --password-stdin"
-                    }
-                }
-            }
-        }
+         stage('Login to Docker') {
+                   steps {
+                       script {
+                           withCredentials([usernamePassword(credentialsId: DOCKER_CREDENTIALS_ID, usernameVariable: 'DOCKER_USERNAME', passwordVariable: 'DOCKER_PASSWORD')]) {
+                               bat "docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD"
+                           }
+                       }
+                   }
+               }
 
 
 
