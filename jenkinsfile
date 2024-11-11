@@ -4,7 +4,7 @@ pipeline {
     environment {
         DOCKER_IMAGE_FRONTEND = 'reactjs-frontend'
         DOCKER_IMAGE_BACKEND = 'spring-data-rest'
-        DOCKER_CREDENTIALS = 'Docker-credentials' // Jenkins credentials ID for Docker Hub
+        DOCKER_CREDENTIALS = 'Docker-credentials'
     }
 
     stages {
