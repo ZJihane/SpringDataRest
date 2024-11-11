@@ -27,7 +27,7 @@ pipeline {
             steps {
                 script {
                     // Navigate to frontend directory, install dependencies, and build React app
-                    bat 'cd src/main/webapp/reactjs && npm install && npm run build'
+                    bat 'cd src/main/webapp/reactjs && npm install && npm run build && set CI=false && npm run build '
                     bat "docker build -t %DOCKER_IMAGE_FRONTEND% ."
                 }
             }
