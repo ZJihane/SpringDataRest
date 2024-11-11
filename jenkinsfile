@@ -8,18 +8,17 @@ pipeline {
     }
 
     stages {
-         stage('Checkout Source Code') {
-                    steps {
-                        checkout scm
-                    }
-                }
+        stage('Checkout Source Code') {
+            steps {
+                checkout scm
+            }
+        }
 
         stage('Build Backend') {
             steps {
                 script {
-                    // Using batch command (bat) instead of sh for Windows
                     bat './mvnw clean install'
-                    bat "docker build -t %DOCKER_IMAGE_BACKEND% "
+                    bat "docker build -t %DOCKER_IMAGE_BACKEND% ."
                 }
             }
         }
@@ -27,24 +26,22 @@ pipeline {
         stage('Build Frontend') {
             steps {
                 script {
-                    // Build the React app (using npm)
+                    // Navigate to frontend directory, install dependencies, and build React app
                     bat 'cd src/main/webapp/reactjs && npm install && npm run build'
-                    bat "docker build -t %DOCKER_IMAGE_FRONTEND% "
+                    bat "docker build -t %DOCKER_IMAGE_FRONTEND% ."
                 }
             }
         }
 
-         stage('Login to Docker') {
-                   steps {
-                       script {
-                           withCredentials([usernamePassword(credentialsId: DOCKER_CREDENTIALS_ID, usernameVariable: 'DOCKER_USERNAME', passwordVariable: 'DOCKER_PASSWORD')]) {
-                               bat "docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD"
-                           }
-                       }
-                   }
-               }
-
-
+        stage('Login to Docker') {
+            steps {
+                script {
+                    withCredentials([usernamePassword(credentialsId: DOCKER_CREDENTIALS, usernameVariable: 'DOCKER_USERNAME', passwordVariable: 'DOCKER_PASSWORD')]) {
+                        bat "docker login -u %DOCKER_USERNAME% -p %DOCKER_PASSWORD%"
+                    }
+                }
+            }
+        }
 
         stage('Deploy with Docker Compose') {
             steps {
