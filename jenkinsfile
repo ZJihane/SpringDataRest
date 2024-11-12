@@ -5,12 +5,29 @@ pipeline {
         DOCKER_IMAGE_FRONTEND = 'reactjs-frontend'
         DOCKER_IMAGE_BACKEND = 'spring-data-rest'
         DOCKER_CREDENTIALS = 'Docker-credentials'
+        SONAR_PROJECT_KEY = 'SpringDataRest'  // Update with your SonarQube project key
+        SONAR_HOST_URL = 'http://localhost:9000'  // Update with your SonarQube server URL
+        SONAR_LOGIN = 'sqp_a04f34dd90445ff906509cfac3864497a8e3807b'  // Update with your SonarQube token
+
     }
 
     stages {
         stage('Checkout Source Code') {
             steps {
                 checkout scm
+            }
+        }
+
+        stage('SonarQube Analysis') {
+            steps {
+                script {
+                    bat """
+                        sonar-scanner.bat -Dsonar.projectKey=%SONAR_PROJECT_KEY% \
+                                         -Dsonar.sources=. \
+                                         -Dsonar.host.url=%SONAR_HOST_URL% \
+                                         -Dsonar.login=%SONAR_LOGIN%
+                    """
+                }
             }
         }
 
@@ -26,10 +43,8 @@ pipeline {
         stage('Build Frontend') {
             steps {
                 script {
-                    // Navigate to frontend directory, install dependencies, and build React app
-                   bat 'cd src/main/webapp/reactjs && npm install && set CI=false  npm run build'
-                   bat "docker build -t %DOCKER_IMAGE_FRONTEND% ."
-
+                    bat 'cd src/main/webapp/reactjs && npm install && set CI=false npm run build'
+                    bat "docker build -t %DOCKER_IMAGE_FRONTEND% ."
                 }
             }
         }
@@ -47,7 +62,6 @@ pipeline {
         stage('Deploy with Docker Compose') {
             steps {
                 script {
-                    // Start the containers using Docker Compose
                     bat "docker-compose up -d"
                 }
             }
@@ -58,5 +72,6 @@ pipeline {
         always {
             cleanWs() // Clean up workspace
         }
+
     }
 }
