@@ -5,16 +5,24 @@ pipeline {
         DOCKER_IMAGE_FRONTEND = 'reactjs-frontend'
         DOCKER_IMAGE_BACKEND = 'spring-data-rest'
         DOCKER_CREDENTIALS = 'Docker-credentials'
-        SONAR_PROJECT_KEY = 'SpringDataRest'  // Update with your SonarQube project key
-        SONAR_HOST_URL = 'http://localhost:9000'  // Update with your SonarQube server URL
-        SONAR_LOGIN = 'sqp_a04f34dd90445ff906509cfac3864497a8e3807b'  // Update with your SonarQube token
-
+        SONAR_PROJECT_KEY = 'SpringDataRest'
+        SONAR_HOST_URL = 'http://localhost:9000'
+        SONAR_LOGIN = 'sqp_a04f34dd90445ff906509cfac3864497a8e3807b'
     }
 
     stages {
         stage('Checkout Source Code') {
             steps {
                 checkout scm
+            }
+        }
+
+        stage('Build Backend') {
+            steps {
+                script {
+                    bat './mvnw clean install' // This ensures the target directory is created
+                    bat "docker build -t %DOCKER_IMAGE_BACKEND% ."
+                }
             }
         }
 
@@ -32,20 +40,10 @@ pipeline {
             }
         }
 
-
-        stage('Build Backend') {
-            steps {
-                script {
-                    bat './mvnw clean install'
-                    bat "docker build -t %DOCKER_IMAGE_BACKEND% ."
-                }
-            }
-        }
-
         stage('Build Frontend') {
             steps {
                 script {
-                    bat 'cd src/main/webapp/reactjs && npm install && set CI=false npm run build'
+                    bat 'cd src/main/webapp/reactjs && npm install && set CI=false && npm run build'
                     bat "docker build -t %DOCKER_IMAGE_FRONTEND% ."
                 }
             }
@@ -74,6 +72,5 @@ pipeline {
         always {
             cleanWs() // Clean up workspace
         }
-
     }
 }
