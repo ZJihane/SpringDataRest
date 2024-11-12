@@ -29,7 +29,7 @@ pipeline {
         stage('Build Frontend') {
             steps {
                 script {
-                    bat 'cd src/main/webapp/reactjs && npm install && set CI=false && npm run build'
+                    bat 'cd src/main/webapp/reactjs && npm install && set CI=false npm run build'
                     // bat "docker build -t %DOCKER_IMAGE_FRONTEND% ."
                 }
             }
