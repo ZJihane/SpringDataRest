@@ -22,14 +22,16 @@ pipeline {
             steps {
                 script {
                     bat """
-                        sonar-scanner.bat -Dsonar.projectKey=%SONAR_PROJECT_KEY% \
-                                         -Dsonar.sources=. \
-                                         -Dsonar.host.url=%SONAR_HOST_URL% \
+                        sonar-scanner.bat -Dsonar.projectKey=%SONAR_PROJECT_KEY% ^
+                                         -Dsonar.sources=. ^
+                                         -Dsonar.java.binaries=target ^
+                                         -Dsonar.host.url=%SONAR_HOST_URL% ^
                                          -Dsonar.login=%SONAR_LOGIN%
                     """
                 }
             }
         }
+
 
         stage('Build Backend') {
             steps {
