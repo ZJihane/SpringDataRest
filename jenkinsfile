@@ -21,11 +21,18 @@ pipeline {
             steps {
                 script {
                     bat './mvnw clean install' // This ensures the target directory is created
-                    bat "docker build -t %DOCKER_IMAGE_BACKEND% ."
+                   // bat "docker build -t %DOCKER_IMAGE_BACKEND% ."
                 }
             }
         }
-
+        stage('Build Frontend') {
+                    steps {
+                        script {
+                            bat 'cd src/main/webapp/reactjs && npm install && set CI=false npm run build'
+                            // bat "docker build -t %DOCKER_IMAGE_FRONTEND% ."
+                        }
+                    }
+                }
         stage('SonarQube Analysis') {
             steps {
                 script {
@@ -40,15 +47,8 @@ pipeline {
             }
         }
 
-        stage('Build Frontend') {
-            steps {
-                script {
-                    bat 'cd src/main/webapp/reactjs && npm install && set CI=false && npm run build'
-                    bat "docker build -t %DOCKER_IMAGE_FRONTEND% ."
-                }
-            }
-        }
 
+        /*
         stage('Login to Docker') {
             steps {
                 script {
@@ -67,7 +67,7 @@ pipeline {
             }
         }
     }
-
+*/
     post {
         always {
             cleanWs() // Clean up workspace
